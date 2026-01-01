@@ -1,0 +1,105 @@
+Architecture Review Meeting - DDR5 Controller
+Date: 2024-03-20, 2:00 PM
+Location: Conference Room A
+Attendees: Mike (PM), Sarah (RTL), John (DV), Lisa (PD), Tom (Arch), Dave (new contractor), Jennifer (VP Eng - partial)
+
+Mike: Okay let's get started, Jennifer has a hard stop at 2:30. Tom, can you walk us through the architecture?
+
+Tom: Sure, so [describes architecture for 10 mins, not captured here]
+
+Jennifer: Quick question - are we on track for October tapeout?
+
+Mike: We're tracking to that. Some risk areas but manageable.
+
+Jennifer: What are the risk areas?
+
+Lisa: Timing closure is my main concern. We have 50ps margin at 800 MHz and typically we need more buffer at this stage.
+
+Jennifer: Can we do anything about that?
+
+Lisa: We could drop to 750 MHz which gives us more margin, but that's a customer discussion.
+
+Tom: I don't think customer will accept 750. Let me talk to them first.
+
+Jennifer: Okay, keep me posted on that. What else?
+
+John: DV resources. We need another engineer. We're at 45% coverage and the ECC tests haven't started.
+
+Jennifer: I thought we approved a hire?
+
+Mike: We did, still in recruiting. HR says 4-6 weeks to fill.
+
+Jennifer: That's too long. Can we get a contractor faster?
+
+Mike: I'll check with the agency today.
+
+Jennifer: Good. I need to run. Send me email summary by EOD. [leaves]
+
+Mike: Okay, let's continue. Sarah, status on the read path?
+
+Sarah: It's in progress. The ECC integration is complex. Original estimate was 2 weeks, now thinking 3.
+
+Tom: Is that 3 weeks from now or 3 weeks total?
+
+Sarah: 3 weeks from now. Already spent 1 week on it.
+
+John: I need that for ECC testing. When can I expect something testable?
+
+Sarah: Maybe end of next week I can give you basic read path without ECC. Full ECC the week after.
+
+John: That works. I'll start with non-ECC tests.
+
+Lisa: While we're discussing timing - Sarah, the command decoder is the critical path. Can you look at restructuring it?
+
+Sarah: Can you send me the path? I'll take a look.
+
+Lisa: Sent during this meeting.
+
+Dave: Quick question - where do I find the coding guidelines?
+
+Sarah: I'll send you the link after the meeting.
+
+Mike: Okay, decisions we need to make:
+
+1. Outstanding transactions - Tom recommends 48. Everyone okay with that?
+[General agreement]
+
+2. 800 MHz vs 750 MHz - Tom to discuss with customer first before we decide
+
+3. Contractor for DV - Mike to pursue today
+
+4. Architecture review presentation for management - Tom to prepare for next Friday
+
+Tom: Wait, next Friday? That's tight.
+
+Mike: Jennifer wants to see it before month end. Can you do Wednesday instead?
+
+Tom: Thursday works better.
+
+Mike: Okay Thursday 10 AM. I'll book it.
+
+Sarah: One more thing - the refresh controller. The spec has three modes and I'm not sure which to prioritize.
+
+Tom: Do all three. They're required for compliance.
+
+Sarah: That's another week of work.
+
+Tom: Can Dave help?
+
+Sarah: He's still ramping. Maybe in 2 weeks.
+
+Mike: Let's revisit next week. Anything else?
+
+John: Just a reminder the VIP license expires in June. Need to renew or we lose access.
+
+Mike: Add it to the risk register. I'll handle procurement.
+
+Mike: Okay we're at time. Summary:
+- 48 outstanding transactions approved
+- Tom talking to customer about frequency
+- Mike getting DV contractor
+- Thursday 10 AM management review
+- Sarah looking at critical path
+- VIP license renewal needed
+
+Thanks everyone.

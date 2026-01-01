@@ -1,0 +1,51 @@
+# Basic DRC Rules for Workshop
+# KLayout DRC Script (Ruby-based)
+#
+# Usage: klayout -b -r basic_drc.lydrc design.gds
+
+# Report file output
+report("DRC Report", "drc_results.lyrdb")
+
+# Define layers
+metal1 = input(31, 0)
+metal2 = input(32, 0)
+via1 = input(51, 0)
+
+# ============================================
+# Metal 1 Rules
+# ============================================
+
+# M1.W.1: Metal1 minimum width = 0.1 µm
+metal1.width(0.1.um, euclidian).output("M1.W.1", "Metal1 minimum width violation (0.1 µm)")
+
+# M1.S.1: Metal1 minimum spacing = 0.1 µm
+metal1.space(0.1.um, euclidian).output("M1.S.1", "Metal1 minimum spacing violation (0.1 µm)")
+
+# ============================================
+# Metal 2 Rules
+# ============================================
+
+# M2.W.1: Metal2 minimum width = 0.14 µm
+metal2.width(0.14.um, euclidian).output("M2.W.1", "Metal2 minimum width violation (0.14 µm)")
+
+# M2.S.1: Metal2 minimum spacing = 0.14 µm
+metal2.space(0.14.um, euclidian).output("M2.S.1", "Metal2 minimum spacing violation (0.14 µm)")
+
+# ============================================
+# Via 1 Rules
+# ============================================
+
+# V1.S.1: Via1 minimum spacing = 0.1 µm
+via1.space(0.1.um, euclidian).output("V1.S.1", "Via1 minimum spacing violation (0.1 µm)")
+
+# V1.E.1: Via1 must be enclosed by Metal1 by at least 0.02 µm
+via1.not_inside(metal1.sized(0.02.um)).output("V1.E.1", "Via1 Metal1 enclosure violation (0.02 µm)")
+
+# V1.E.2: Via1 must be enclosed by Metal2 by at least 0.02 µm
+via1.not_inside(metal2.sized(0.02.um)).output("V1.E.2", "Via1 Metal2 enclosure violation (0.02 µm)")
+
+# ============================================
+# Summary
+# ============================================
+# Run with: klayout -b -r basic_drc.lydrc design.gds
+# Results saved to: drc_results.lyrdb

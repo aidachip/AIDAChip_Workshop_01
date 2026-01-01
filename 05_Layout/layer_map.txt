@@ -1,0 +1,33 @@
+# Layer Map for Workshop Exercises
+# Format: layer_name layer_number datatype
+# Based on a simplified generic process
+
+# Diffusion layers
+DIFF        1   0   # Active/Diffusion
+NWELL       2   0   # N-Well
+PWELL       3   0   # P-Well
+
+# Poly and gates
+POLY        10  0   # Polysilicon
+GATE        10  1   # Gate poly (over active)
+
+# Contacts and vias
+CONTACT     20  0   # Contact (diff/poly to M1)
+VIA1        51  0   # Via between M1 and M2
+VIA2        52  0   # Via between M2 and M3
+VIA3        53  0   # Via between M3 and M4
+
+# Metal layers
+METAL1      31  0   # Metal 1
+METAL2      32  0   # Metal 2
+METAL3      33  0   # Metal 3
+METAL4      34  0   # Metal 4
+
+# Pin layers (for LVS)
+M1_PIN      31  1   # Metal 1 pin text
+M2_PIN      32  1   # Metal 2 pin text
+
+# Misc
+TEXT        100 0   # Text labels
+BOUNDARY    200 0   # Cell boundary
+NO_FILL     201 0   # Density fill exclusion

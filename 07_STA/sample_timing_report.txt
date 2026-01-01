@@ -1,0 +1,227 @@
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 20
+        -nworst 1
+Design : top_design
+Version: S-2021.06
+Date   : Wed Jan 15 10:30:00 2024
+****************************************
+
+  Startpoint: input_reg (rising edge-triggered flip-flop clocked by clk_sys)
+  Endpoint: mult_out_reg[31] (rising edge-triggered flip-flop clocked by clk_sys)
+  Path Group: clk_sys
+  Path Type: max
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_sys (rise edge)               0.000      0.000
+  clock network delay (propagated)        0.285      0.285
+  input_reg/CLK (DFF_X1)                  0.000      0.285 r
+  input_reg/Q (DFF_X1)                    0.142      0.427 r
+  U_mult/A[0] (mult_32x32)                0.000      0.427 r
+  U_mult/mult_core/A[0] (mult_core)       0.012      0.439 r
+  U_mult/mult_core/U1523/Z (XOR2_X1)      0.098      0.537 f
+  U_mult/mult_core/U1524/Z (AND2_X1)      0.067      0.604 f
+  U_mult/mult_core/U1525/Z (XOR2_X1)      0.089      0.693 r
+  ... (54 levels of logic)
+  U_mult/mult_core/U2847/Z (FA_X1)        0.134      1.892 f
+  U_mult/mult_core/P[31] (mult_core)      0.000      1.892 f
+  U_mult/P[31] (mult_32x32)               0.000      1.892 f
+  mult_out_reg[31]/D (DFF_X1)             0.015      1.907 f
+  data arrival time                                  1.907
+
+  clock clk_sys (rise edge)               2.000      2.000
+  clock network delay (propagated)        0.312      2.312
+  clock uncertainty                      -0.100      2.212
+  mult_out_reg[31]/CLK (DFF_X1)           0.000      2.212 r
+  library setup time                     -0.052      2.160
+  data required time                                 2.160
+  -----------------------------------------------------------
+  data required time                                 2.160
+  data arrival time                                 -1.907
+  -----------------------------------------------------------
+  slack (MET)                                        0.253
+
+
+  Startpoint: cpu_reg[15] (rising edge-triggered flip-flop clocked by clk_cpu)
+  Endpoint: cache_data_reg[127] (rising edge-triggered flip-flop clocked by clk_cpu)
+  Path Group: clk_cpu
+  Path Type: max
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_cpu (rise edge)               0.000      0.000
+  clock network delay (propagated)        0.156      0.156
+  cpu_reg[15]/CLK (DFF_X2)                0.000      0.156 r
+  cpu_reg[15]/Q (DFF_X2)                  0.095      0.251 r
+  U_cache/addr[15] (cache_ctrl)           0.000      0.251 r
+  U_cache/U_tag/A[15] (tag_compare)       0.008      0.259 r
+  U_cache/U_tag/U234/Z (XOR2_X1)          0.087      0.346 f
+  U_cache/U_tag/U235/Z (NOR4_X1)          0.112      0.458 r
+  U_cache/U_tag/U236/Z (NAND2_X1)         0.045      0.503 f
+  ... (38 levels of logic)
+  U_cache/U_data/data[127] (cache_data)   0.000      0.987 f
+  cache_data_reg[127]/D (DFF_X1)          0.021      1.008 f
+  data arrival time                                  1.008
+
+  clock clk_cpu (rise edge)               1.000      1.000
+  clock network delay (propagated)        0.178      1.178
+  clock uncertainty                      -0.050      1.128
+  cache_data_reg[127]/CLK (DFF_X1)        0.000      1.128 r
+  library setup time                     -0.048      1.080
+  data required time                                 1.080
+  -----------------------------------------------------------
+  data required time                                 1.080
+  data arrival time                                 -1.008
+  -----------------------------------------------------------
+  slack (MET)                                        0.072
+
+
+  Startpoint: io_data_reg[7] (rising edge-triggered flip-flop clocked by clk_io)
+  Endpoint: fifo_wr_reg[31] (rising edge-triggered flip-flop clocked by clk_sys)
+  Path Group: clk_sys
+  Path Type: max
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_io (rise edge)                0.000      0.000
+  clock network delay (propagated)        0.245      0.245
+  io_data_reg[7]/CLK (DFF_X1)             0.000      0.245 r
+  io_data_reg[7]/Q (DFF_X1)               0.138      0.383 r
+  U_sync/D[7] (sync_2ff)                  0.000      0.383 r
+  U_sync/sync1_reg[7]/D (DFF_X1)          0.018      0.401 r
+  ... (synchronizer path)
+  U_sync/Q[7] (sync_2ff)                  0.000      1.856 r
+  U_fifo/din[7] (async_fifo)              0.012      1.868 r
+  U_fifo/U_wr/data[7] (fifo_write)        0.000      1.868 r
+  U_fifo/U_wr/U45/Z (AND2_X1)             0.078      1.946 r
+  fifo_wr_reg[31]/D (DFF_X1)              0.015      1.961 r
+  data arrival time                                  1.961
+
+  clock clk_sys (rise edge)               2.000      2.000
+  clock network delay (propagated)        0.298      2.298
+  clock uncertainty                      -0.150      2.148
+  fifo_wr_reg[31]/CLK (DFF_X1)            0.000      2.148 r
+  library setup time                     -0.045      2.103
+  data required time                                 2.103
+  -----------------------------------------------------------
+  data required time                                 2.103
+  data arrival time                                 -1.961
+  -----------------------------------------------------------
+  slack (MET)                                        0.142
+
+
+  Startpoint: ctrl_reg[3] (rising edge-triggered flip-flop clocked by clk_sys)
+  Endpoint: dma_addr_reg[15] (rising edge-triggered flip-flop clocked by clk_sys)
+  Path Group: clk_sys
+  Path Type: max
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_sys (rise edge)               0.000      0.000
+  clock network delay (propagated)        0.278      0.278
+  ctrl_reg[3]/CLK (DFF_X1)                0.000      0.278 r
+  ctrl_reg[3]/Q (DFF_X1)                  0.145      0.423 r
+  U_dma/ctrl[3] (dma_engine)              0.000      0.423 r
+  U_dma/U_arbiter/req[3] (arbiter)        0.015      0.438 r
+  U_dma/U_arbiter/U89/Z (AOI22_X1)        0.098      0.536 f
+  U_dma/U_arbiter/U90/Z (INV_X1)          0.034      0.570 r
+  U_dma/U_arbiter/U91/Z (NAND3_X1)        0.056      0.626 f
+  ... (45 levels of logic)
+  U_dma/U_addr_gen/addr[15] (addr_gen)    0.000      2.134 f
+  dma_addr_reg[15]/D (DFF_X1)             0.019      2.153 f
+  data arrival time                                  2.153
+
+  clock clk_sys (rise edge)               2.000      2.000
+  clock network delay (propagated)        0.285      2.285
+  clock uncertainty                      -0.100      2.185
+  dma_addr_reg[15]/CLK (DFF_X1)           0.000      2.185 r
+  library setup time                     -0.051      2.134
+  data required time                                 2.134
+  -----------------------------------------------------------
+  data required time                                 2.134
+  data arrival time                                 -2.153
+  -----------------------------------------------------------
+  slack (VIOLATED)                                  -0.019
+
+
+  Startpoint: mem_cmd_reg[2] (rising edge-triggered flip-flop clocked by clk_mem)
+  Endpoint: mem_data_reg[63] (rising edge-triggered flip-flop clocked by clk_mem)
+  Path Group: clk_mem
+  Path Type: max
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_mem (rise edge)               0.000      0.000
+  clock network delay (propagated)        0.198      0.198
+  mem_cmd_reg[2]/CLK (DFF_X2)             0.000      0.198 r
+  mem_cmd_reg[2]/Q (DFF_X2)               0.102      0.300 r
+  U_mem_ctrl/cmd[2] (mem_controller)      0.000      0.300 r
+  U_mem_ctrl/U_decode/cmd[2] (cmd_decode) 0.012      0.312 r
+  U_mem_ctrl/U_decode/U78/Z (NOR2_X1)     0.067      0.379 f
+  ... (62 levels of logic)
+  U_mem_ctrl/U_data/dout[63] (data_path)  0.000      3.087 f
+  mem_data_reg[63]/D (DFF_X1)             0.022      3.109 f
+  data arrival time                                  3.109
+
+  clock clk_mem (rise edge)               3.003      3.003
+  clock network delay (propagated)        0.205      3.208
+  clock uncertainty                      -0.080      3.128
+  mem_data_reg[63]/CLK (DFF_X1)           0.000      3.128 r
+  library setup time                     -0.055      3.073
+  data required time                                 3.073
+  -----------------------------------------------------------
+  data required time                                 3.073
+  data arrival time                                 -3.109
+  -----------------------------------------------------------
+  slack (VIOLATED)                                  -0.036
+
+
+  Startpoint: crypto_key_reg[127] (rising edge-triggered flip-flop clocked by clk_sys)
+  Endpoint: crypto_out_reg[0] (rising edge-triggered flip-flop clocked by clk_sys)
+  Path Group: clk_sys
+  Path Type: max
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_sys (rise edge)               0.000      0.000
+  clock network delay (propagated)        0.267      0.267
+  crypto_key_reg[127]/CLK (DFF_X1)        0.000      0.267 r
+  crypto_key_reg[127]/Q (DFF_X1)          0.156      0.423 r
+  U_crypto/key[127] (crypto_engine)       0.000      0.423 r
+  U_crypto/U_sbox/in[127] (sbox_array)    0.018      0.441 r
+  ... (89 levels of logic - AES rounds)
+  U_crypto/U_mix/out[0] (mix_columns)     0.000      2.345 f
+  crypto_out_reg[0]/D (DFF_X1)            0.025      2.370 f
+  data arrival time                                  2.370
+
+  clock clk_sys (rise edge)               2.000      2.000
+  clock network delay (propagated)        0.289      2.289
+  clock uncertainty                      -0.100      2.189
+  crypto_out_reg[0]/CLK (DFF_X1)          0.000      2.189 r
+  library setup time                     -0.052      2.137
+  data required time                                 2.137
+  -----------------------------------------------------------
+  data required time                                 2.137
+  data arrival time                                 -2.370
+  -----------------------------------------------------------
+  slack (VIOLATED)                                  -0.233
+
+
+****************************************
+Timing Summary
+****************************************
+
+Path Groups          WNS        TNS     Violating
+                    (ns)       (ns)         Paths
+-------------------------------------------------
+clk_sys            -0.233     -0.252            2
+clk_cpu             0.072      0.000            0
+clk_mem            -0.036     -0.036            1
+clk_io              0.342      0.000            0
+-------------------------------------------------
+Total              -0.233     -0.288            3
+
+1 timing check completed

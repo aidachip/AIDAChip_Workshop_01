@@ -1,0 +1,27 @@
+# Exclude drafts
+drafts/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+
+# Generated files
+*.gds
+*.lyrdb
+*.vcd
+*.vvp
+
+# OS files
+.DS_Store
+*.swp
+*~
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*

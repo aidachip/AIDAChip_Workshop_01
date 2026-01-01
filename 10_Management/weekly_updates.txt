@@ -1,0 +1,49 @@
+Weekly Status Updates - DDR5 Controller Project
+Week of: 2024-03-18
+
+=== From Sarah (RTL Lead) ===
+Made good progress on the command scheduler this week. The arbitration logic is done and passing unit tests. Had some issues with the refresh controller - the DDR5 spec is confusing about the new refresh modes. Spent a day figuring that out with Tom.
+
+Started the read data path but it's more complex than expected with the ECC integration. Probably need another week on this. We're behind on the write path too because I had to help debug an issue on the DDR4 project (2 days lost).
+
+Also the new contractor (Dave) started Monday. He's ramping up, assigned him the simple register block to get familiar with coding style.
+
+Blocker: Still waiting on the updated timing parameters from PHY team. Can't finalize the training sequence without these.
+
+=== From John (DV Lead) ===
+VIP is integrated and basic tests are running. Found 3 bugs in RTL already (logged in Jira). Coverage is at 45% which is expected for this phase.
+
+Wrote tests for command scheduling and basic read/write. Need to start the ECC tests but waiting for RTL to be ready.
+
+Concerns: We're behind on the constrained random infrastructure. The DDR5 VIP has more features than DDR4 and it's taking time to figure out. Also need more help - one DV engineer isn't enough. When is the new hire starting?
+
+Good news: Reused about 60% of DDR4 testbench components with minor modifications.
+
+=== From Lisa (PD Lead) ===
+Synthesis runs are producing reasonable results. Current area is 2.3 mm² which is over budget. Identified some RTL structures that are inefficient - will discuss with Sarah.
+
+Timing is a challenge. The 800 MHz target has 50ps margin right now which is tight for early stages. Main issue is the command decoder path.
+
+Got the PDK issue sorted finally. Missing files were from vendor FTP issue.
+
+Need decision: Should we run at 750 MHz and buffer the interface? Would save 3 weeks of timing closure effort but impacts schedule differently.
+
+=== From Tom (Architecture) ===
+Finished PHY interface spec review with PHY team. Minor changes only - they agreed to our timing proposal.
+
+Reviewed the outstanding transactions question. Recommending we go with 48 (compromise between Sarah's 32 and my 64). Simulations show diminishing returns above 48 for typical workloads.
+
+Customer meeting Thursday. They're asking about the 5600 speed bin timeline. Need to manage expectations - we should focus on 4800 first.
+
+=== Other Notes ===
+- Team morale is good but people are working long hours
+- Need to schedule architecture review for next week
+- Conference room B is double-booked Tuesday, need to move standup
+- IT is upgrading servers this weekend, may affect simulations
+
+=== Metrics This Week ===
+- RTL lines of code: 45,000 (up from 38,000)
+- Tests passing: 127/142 (15 failing, 8 are known RTL issues)
+- Lint warnings: 234 (down from 289)
+- Coverage: 45% (target 95%)
+- Bugs open: 23 (12 new, 8 closed, 3 reopened)

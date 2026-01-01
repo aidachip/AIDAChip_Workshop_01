@@ -1,0 +1,77 @@
+Design Meeting Notes - DMA Controller
+Date: 2024-01-10
+Attendees: John, Sarah, Mike
+
+=== Overview ===
+Need a DMA controller for moving data between memory and peripherals
+Should support scatter-gather for flexibility
+Target: 28nm process, part of main SoC
+
+=== Requirements discussed ===
+- AXI4 interface for memory side (need full AXI4, not lite)
+- APB for register access
+- Support 4 channels minimum, maybe 8?
+- Programmable burst length up to 256 beats
+- Linked list descriptor mode for scatter-gather
+
+Performance targets:
+- Sustain close to peak AXI bandwidth
+- Low latency for small transfers (< 100 cycles for 1-beat)
+- John thinks we need 5 GB/s at 500MHz? Mike says 4 is enough
+
+=== Interface stuff ===
+Memory port:
+- 128-bit data width (matches our memory controller)
+- Support for AXI IDs - need at least 4 outstanding
+- Exclusive access not needed
+
+Peripheral ports:
+- Simple req/ack interface? Or use AXI-Stream?
+- Sarah wants AXI-Stream for future flexibility
+- Each channel gets its own peripheral port
+
+Interrupts:
+- One per channel for completion
+- Separate error interrupt
+- Need to support both edge and level? (check with software team)
+
+=== Registers ===
+Per channel:
+- Control (enable, direction, mode)
+- Status (busy, done, error)
+- Source address
+- Dest address
+- Transfer count
+- Descriptor pointer (for SG mode)
+- Link to next descriptor
+
+Global:
+- Enable/reset
+- Interrupt status
+- Interrupt mask
+- Version ID
+
+=== Descriptor format ===
+In memory for scatter-gather:
+- Source addr (64-bit)
+- Dest addr (64-bit)
+- Byte count (32-bit)
+- Next descriptor pointer (64-bit)
+- Control bits (interrupt on complete, last descriptor, etc.)
+
+=== Open issues ===
+1. How to handle misaligned addresses? Trap as error or handle in HW?
+2. Cache coherency - do we need to snoop? Mike says SW will manage
+3. Security - need TrustZone support? Defer for now
+4. Power - need clock gating per channel?
+
+=== Action items ===
+- John: Draft RTL for channel controller
+- Sarah: Interface spec by Friday
+- Mike: Check AXI-Stream requirements with system team
+
+=== Random notes ===
+- Look at ARM DMA-330 for reference (but simpler)
+- Need to fit in 50k gates ideally
+- Verification: need to test all SG scenarios
+- Don't forget byteswapping for big-endian mode!

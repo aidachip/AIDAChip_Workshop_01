@@ -1,0 +1,120 @@
+================================================================================
+                        ATPG COVERAGE REPORT
+                     Generated: 2024-01-15 14:32:00
+================================================================================
+
+Design: top_chip
+Technology: 28nm
+Pattern Type: Stuck-At
+Pattern Count: 2,847
+
+================================================================================
+                           COVERAGE SUMMARY
+================================================================================
+
+Fault Class              Total       Detected    Undetected  Coverage
+--------------------------------------------------------------------------------
+Stuck-At (SA)            248,532     236,105     12,427      95.00%
+  - SA0                  124,266     118,052      6,214      95.00%
+  - SA1                  124,266     118,053      6,213      95.00%
+
+Transition (TD)          248,532     221,634     26,898      89.17%
+  - Slow-to-Rise         124,266     110,817     13,449      89.18%
+  - Slow-to-Fall         124,266     110,817     13,449      89.17%
+
+================================================================================
+                        UNDETECTED FAULT ANALYSIS
+================================================================================
+
+Category                          Count       Percentage
+--------------------------------------------------------------------------------
+Untestable - ATPG Untestable       4,215       33.9%
+Untestable - Blocked                2,847       22.9%
+Untestable - Redundant              1,423       11.5%
+Untestable - Tied                   1,156        9.3%
+Undetected - ATPG Abort               892        7.2%
+Undetected - Not Observed             834        6.7%
+Undetected - Not Controlled           672        5.4%
+Undetected - Unspecified              388        3.1%
+--------------------------------------------------------------------------------
+Total Undetected                   12,427      100.0%
+
+================================================================================
+                         MODULE COVERAGE BREAKDOWN
+================================================================================
+
+Module Name              Fault Count  Detected   Coverage   Status
+--------------------------------------------------------------------------------
+cpu_core                    85,234     82,477     96.77%    PASS
+memory_controller           42,156     40,890     97.00%    PASS
+pcie_controller             35,782     33,493     93.60%    MARGINAL
+usb_controller              28,945     27,498     95.00%    PASS
+dma_engine                  22,134     20,256     91.51%    MARGINAL
+crypto_engine               15,678     13,892     88.61%    FAIL
+clock_gen                    8,234      7,892     95.85%    PASS
+misc_io                     10,369      9,707     93.62%    MARGINAL
+--------------------------------------------------------------------------------
+
+================================================================================
+                         LOW COVERAGE ANALYSIS
+================================================================================
+
+Modules with coverage below 95.0%:
+
+1. crypto_engine (88.61%)
+   - 1,786 undetected faults
+   - Primary issue: Black-box memories without BIST
+   - Recommendation: Add memory BIST or test wrapper
+
+2. dma_engine (91.51%)
+   - 1,878 undetected faults
+   - Primary issue: Complex state machines with many unreachable states
+   - Recommendation: Add test points or DFT bypass logic
+
+3. pcie_controller (93.60%)
+   - 2,289 undetected faults
+   - Primary issue: Analog interface tie-offs marked untestable
+   - Recommendation: Expected, add to fault exclusion list
+
+4. misc_io (93.62%)
+   - 662 undetected faults
+   - Primary issue: Bidirectional I/O pad logic
+   - Recommendation: Add JTAG boundary scan
+
+================================================================================
+                         TEST PATTERN SUMMARY
+================================================================================
+
+Pattern Type                Count       Time (cycles)
+--------------------------------------------------------------------------------
+Basic Scan                  2,134           512,160
+Clock Domain Crossing         345            82,800
+At-Speed Launch               368           132,480
+--------------------------------------------------------------------------------
+Total                       2,847           727,440
+
+Estimated Test Time @ 100MHz: 7.27ms per chip
+
+================================================================================
+                            RECOMMENDATIONS
+================================================================================
+
+1. CRITICAL: Add memory BIST to crypto_engine block
+   - Current coverage: 88.61%
+   - Expected improvement: +5-6%
+
+2. HIGH: Add test points to dma_engine state machines
+   - Current coverage: 91.51%
+   - Expected improvement: +2-3%
+
+3. MEDIUM: Review pcie_controller exclusions
+   - Verify analog tie-offs are correctly excluded
+   - No coverage improvement expected (correct behavior)
+
+4. LOW: Consider boundary scan for misc_io
+   - Improves board-level test coverage
+   - Minimal die area impact
+
+================================================================================
+                              END OF REPORT
+================================================================================

@@ -1,0 +1,80 @@
+Project Kickoff Notes - DDR5 Memory Controller
+Date: 2024-01-08
+Present: Mike (PM), Sarah (RTL Lead), John (DV Lead), Lisa (PD Lead), Tom (Architect)
+
+=== Background ===
+Customer needs DDR5 controller for their next-gen SoC
+Must be backward compatible with DDR4
+Target first silicon Q4 2024
+Budget approved for 6-person team
+
+=== High-Level Requirements ===
+
+Performance:
+- DDR5-4800 minimum (customer stretch goal: DDR5-5600)
+- 64-bit interface, dual rank support
+- Target bandwidth: 38.4 GB/s
+- Latency: <50ns for read (first data)
+
+Features:
+- ECC support (on-die and sideband)
+- Power management (all DDR5 low power states)
+- Training and calibration
+- RAS features (error logging, address parity)
+
+Verification:
+- UVM testbench, reuse from DDR4 project where possible
+- Need protocol checker from VIP vendor (already have license)
+- Coverage target: 95% functional, 90% code
+
+Physical Design:
+- 5nm process (TSMC N5)
+- Target frequency: 800 MHz (2:1 ratio with DDR)
+- Area budget: 2 mm² max
+- Power: <500mW typical
+
+=== Open Questions from Kickoff ===
+1. Do we need PHY or just controller? Tom says controller only, PHY is separate IP
+2. How many outstanding transactions? Sarah suggests 32, Tom wants 64
+3. Which ECC mode takes priority? Need customer input
+4. Verification: Can we get VIP in time? John to check with vendor
+5. Schedule: Is Q4 realistic? Lisa concerned about timing closure at 5nm
+
+=== Dependencies ===
+- PHY team needs our timing interface spec by Feb 15
+- Need PDK access (Lisa says it's delayed, maybe 2 weeks)
+- Customer spec v1.2 expected next week (has clarifications)
+
+=== Risks Discussed ===
+- 5nm is new for team, learning curve expected
+- DDR5 spec complexity (vs DDR4)
+- VIP availability could slip schedule
+- PHY interface not yet frozen
+
+=== Immediate Next Steps ===
+- Sarah: Start micro-architecture spec
+- John: VIP evaluation and ordering
+- Lisa: Get PDK access sorted out
+- Tom: Finalize interface spec with PHY team
+- Mike: Draft project plan for review next week
+
+=== Resources ===
+Confirmed:
+- Sarah (RTL Lead) - 100%
+- John (DV Lead) - 100%
+- Lisa (PD Lead) - 50% (shared with other project)
+- 2 contractors TBD
+
+Need to hire:
+- 1 senior DV engineer (John's req)
+- Maybe 1 more RTL if schedule tight
+
+=== Schedule Targets (rough) ===
+- Spec freeze: Feb 2024
+- RTL freeze: June 2024
+- Verification complete: Aug 2024
+- Synthesis/P&R: July-Sep 2024
+- Tapeout: Oct 2024
+- First silicon: Dec 2024
+
+Note from Tom: These dates are aggressive. Need to track weekly.
