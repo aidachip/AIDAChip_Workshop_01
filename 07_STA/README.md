@@ -5,6 +5,8 @@
 **Tools Required**: Python for analysis scripts (see [SETUP.md](../SETUP.md))
 **Goal**: Learn to use LLMs for timing constraint development, report analysis, and timing closure
 
+> **Note**: This module's exercises are currently being verified. Some steps may require adjustment based on your environment. Please report any issues to hello@aidachip.com.
+
 ---
 
 ## Overview
