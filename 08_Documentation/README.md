@@ -194,8 +194,10 @@ Use Claude to review and improve existing documentation.
 
 ### Step 1: Review for Completeness
 
+Use the `design_spec.md` you generated in Exercise 1, or provide your own spec:
+
 ```
-Review old_spec.md and identify:
+Review design_spec.md and identify:
 
 1. Missing sections that a reader would expect
 2. Ambiguous requirements that need clarification
@@ -221,14 +223,14 @@ Transform each vague statement into concrete, measurable requirements.
 ### Step 3: Generate Missing Sections
 
 ```
-Based on the content in old_spec.md, generate the missing sections:
+Based on the review from Step 1, generate any missing sections for design_spec.md:
 
 1. Test plan outline
 2. Performance metrics and targets
 3. Power estimation methodology
 4. Integration checklist
 
-Add these as new sections in improved_spec.md
+Save the improved version to improved_spec.md
 ```
 
 ---
@@ -287,7 +289,16 @@ endmodule
 
 ### Document Templates
 
-See `template_spec.md` for a complete specification template that you can adapt for your projects.
+You can ask Claude to generate a specification template for your projects:
+
+```
+Create a reusable design specification template with placeholders for:
+- Project info, version, authors
+- Requirements, architecture, interfaces
+- Test plan, open issues
+
+Save to template_spec.md
+```
 
 ---
 
