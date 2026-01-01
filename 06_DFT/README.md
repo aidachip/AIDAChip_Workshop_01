@@ -138,38 +138,46 @@ Explain how ATPG works for stuck-at faults:
 Use a simple example circuit (AND gate, OR gate, FF) to illustrate.
 ```
 
-### Step 2: Analyze Coverage Report
+### Step 2: Create a Coverage Report Parser
 
-We've provided a sample coverage report. Ask Claude to analyze it:
-
-```
-Analyze this ATPG coverage report and provide recommendations:
-
-[Contents of sample_atpg_report.txt]
-
-Identify:
-1. Overall stuck-at coverage and whether it meets typical targets
-2. Categories of undetected faults
-3. Most common reasons for low coverage
-4. Specific recommendations to improve coverage
-```
-
-### Step 3: Create Coverage Analysis Script
+We've provided a sample coverage report. Rather than asking Claude to analyze reports directly, let's create a reusable tool:
 
 ```
-Write a Python script that parses ATPG coverage reports:
+Write a Python script that parses ATPG coverage reports like sample_atpg_report.txt:
 
-1. Extract coverage numbers by fault type
-2. List modules with coverage below threshold
-3. Categorize untestable faults by reason
-4. Generate a summary with actionable recommendations
+1. Extract coverage percentages by fault type (stuck-at, transition, etc.)
+2. List modules with coverage below a configurable threshold
+3. Categorize untestable faults by reason (tied, blocked, redundant)
+4. Generate a summary with:
+   - Overall coverage vs. target
+   - Top modules needing attention
+   - Actionable recommendations
 
 Include command-line arguments for:
 - Input report file
-- Target coverage threshold
-- Output format (text, csv, json)
+- Target coverage threshold (default 95%)
+- Output format (text, json)
 
-Save to analyze_coverage.py
+Save to parse_atpg_report.py
+```
+
+> **Why a script?** Reports change frequently during a project. A parser script gives you consistent, repeatable analysis and can be integrated into CI/CD pipelines.
+
+### Step 3: Extend the Analysis Script
+
+```
+Extend parse_atpg_report.py to also:
+
+1. Compare coverage against a baseline file (previous run)
+2. Highlight regressions (coverage decreases)
+3. Track coverage trends if given multiple report files
+4. Generate alerts for modules that dropped below threshold
+
+Add command-line options:
+- --baseline: previous report for comparison
+- --trend: directory of historical reports
+
+Update parse_atpg_report.py
 ```
 
 ---
