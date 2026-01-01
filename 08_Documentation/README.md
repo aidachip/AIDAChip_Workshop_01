@@ -123,7 +123,18 @@ Use Claude to generate documentation from code.
 
 ### Step 1: Document a Verilog Module
 
-We've provided a sample Verilog module. Ask Claude to document it:
+Use your own Verilog module, or ask Claude to generate one first:
+
+```
+Generate a simple AXI-Lite register interface module in Verilog with:
+- 4 read/write registers
+- APB-like timing
+- Parameterizable data width
+
+Save to sample_module.v
+```
+
+Then ask Claude to document it:
 
 ```
 Generate comprehensive documentation for sample_module.v:
@@ -140,10 +151,12 @@ Output as a Markdown file suitable for inclusion in a project wiki.
 Save to sample_module_doc.md
 ```
 
+> **Tip**: If you have your own RTL, use that instead! Documenting real code is more valuable practice.
+
 ### Step 2: Generate Wavedrom Timing Diagrams
 
 ```
-Create Wavedrom timing diagrams for sample_module.v showing:
+Based on sample_module.v, create Wavedrom timing diagrams showing:
 
 1. Basic read transaction
 2. Basic write transaction
@@ -227,9 +240,6 @@ This module includes sample files for exercises:
 | File | Description |
 |------|-------------|
 | `design_notes.txt` | Rough notes from design meeting |
-| `sample_module.v` | Verilog module for documentation |
-| `old_spec.md` | Outdated spec needing improvement |
-| `template_spec.md` | Template for new specifications |
 
 ---
 
