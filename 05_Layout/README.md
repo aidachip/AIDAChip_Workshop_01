@@ -5,6 +5,8 @@
 **Tools Required**: KLayout (see [SETUP.md](../SETUP.md))
 **Goal**: Learn to use LLMs for layout viewing, scripting, DRC/LVS, and automation
 
+> **Note**: This module's exercises are currently being verified. Some steps may require adjustment based on your KLayout version and environment. Please report any issues to hello@aidachip.com.
+
 ---
 
 ## Overview
