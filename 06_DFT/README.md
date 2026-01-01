@@ -267,9 +267,7 @@ This module includes sample files for exercises:
 | File | Description |
 |------|-------------|
 | `sample_atpg_report.txt` | Sample ATPG coverage report for analysis |
-| `scan_rules.txt` | Common DFT design rules |
 | `lfsr.v` | Starter LFSR implementation |
-| `misr.v` | Starter MISR implementation |
 
 ---
 
