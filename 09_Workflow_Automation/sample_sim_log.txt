@@ -1,0 +1,94 @@
+# Icarus Verilog Simulation Log
+# Design: fifo_controller
+# Date: 2024-03-15 14:23:45
+# Command: vvp fifo_tb.vvp
+
+VCD info: dumpfile fifo_tb.vcd opened for output.
+Starting FIFO Controller Testbench...
+
+=== Test 1: Basic Write Operation ===
+[    100 ns] INFO: Resetting DUT...
+[    200 ns] INFO: Reset complete
+[    250 ns] INFO: Writing data 0xDEADBEEF to FIFO
+[    300 ns] INFO: Write acknowledged
+[    350 ns] PASS: Data written successfully
+
+=== Test 2: Basic Read Operation ===
+[    400 ns] INFO: Reading from FIFO
+[    450 ns] INFO: Read data: 0xDEADBEEF
+[    500 ns] PASS: Read data matches expected
+
+=== Test 3: FIFO Full Condition ===
+[    600 ns] INFO: Filling FIFO to capacity (16 entries)
+[    800 ns] INFO: FIFO full flag asserted
+[    850 ns] INFO: Attempting write to full FIFO
+[    900 ns] WARNING: Write attempted while FIFO full - data not written
+[    950 ns] PASS: Full condition handled correctly
+
+=== Test 4: FIFO Empty Condition ===
+[   1000 ns] INFO: Draining FIFO
+[   1200 ns] INFO: FIFO empty flag asserted
+[   1250 ns] INFO: Attempting read from empty FIFO
+[   1300 ns] WARNING: Read attempted while FIFO empty - invalid data
+[   1350 ns] PASS: Empty condition handled correctly
+
+=== Test 5: Simultaneous Read/Write ===
+[   1400 ns] INFO: Testing simultaneous read and write
+[   1500 ns] INFO: Write data: 0xCAFEBABE
+[   1500 ns] INFO: Read data: 0x12345678
+[   1550 ns] PASS: Simultaneous operation successful
+
+=== Test 6: Overflow Protection ===
+[   1600 ns] INFO: Testing overflow protection
+[   1700 ns] ERROR: Overflow detected - data corruption possible
+[   1750 ns] FAIL: Overflow protection failed
+[   1800 ns] DEBUG: FIFO state: wr_ptr=0x10, rd_ptr=0x00, count=17
+
+=== Test 7: Pointer Wraparound ===
+[   1900 ns] INFO: Testing pointer wraparound
+[   2100 ns] INFO: Write pointer wrapped from 15 to 0
+[   2200 ns] INFO: Read pointer wrapped from 15 to 0
+[   2250 ns] PASS: Pointer wraparound correct
+
+=== Test 8: Random Traffic ===
+[   2300 ns] INFO: Running random traffic test (100 transactions)
+[   2400 ns] INFO: Transaction 25/100 complete
+[   2500 ns] INFO: Transaction 50/100 complete
+[   2600 ns] INFO: Transaction 75/100 complete
+[   2700 ns] INFO: Transaction 100/100 complete
+[   2750 ns] INFO: Checking data integrity...
+[   2800 ns] ERROR: Data mismatch at entry 47
+[   2800 ns] ERROR:   Expected: 0xA5A5A5A5
+[   2800 ns] ERROR:   Received: 0xA5A5A5A4
+[   2850 ns] FAIL: Random traffic test failed
+
+=== Test 9: Reset During Operation ===
+[   2900 ns] INFO: Testing reset during active operation
+[   2950 ns] INFO: Asserting reset
+[   3000 ns] INFO: FIFO cleared, pointers reset
+[   3050 ns] PASS: Reset during operation successful
+
+=== Test 10: Back-to-Back Operations ===
+[   3100 ns] INFO: Testing back-to-back writes
+[   3200 ns] INFO: 8 consecutive writes completed
+[   3250 ns] INFO: Testing back-to-back reads
+[   3350 ns] INFO: 8 consecutive reads completed
+[   3400 ns] PASS: Back-to-back operations successful
+
+============================================
+SIMULATION SUMMARY
+============================================
+Total tests:    10
+Passed:         8
+Failed:         2
+Warnings:       2
+Errors:         3
+
+Failed tests:
+  - Test 6: Overflow Protection
+  - Test 8: Random Traffic
+
+Simulation time: 3400 ns
+Wall clock time: 1.23 seconds
+
+$finish called at time 3400 ns

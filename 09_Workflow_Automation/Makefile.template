@@ -1,0 +1,180 @@
+# ============================================================================
+# Verilog Simulation Makefile Template
+# ============================================================================
+# Customize the variables below for your project
+
+# Project Settings
+PROJECT     := my_design
+TOP_MODULE  := top
+TB_TOP      := $(TOP_MODULE)_tb
+
+# Directories
+SRC_DIR     := src
+TB_DIR      := tb
+BUILD_DIR   := build
+LOG_DIR     := logs
+
+# File Discovery
+VERILOG_SRC := $(wildcard $(SRC_DIR)/*.v)
+SV_SRC      := $(wildcard $(SRC_DIR)/*.sv)
+TB_SRC      := $(wildcard $(TB_DIR)/*.v) $(wildcard $(TB_DIR)/*.sv)
+ALL_SRC     := $(VERILOG_SRC) $(SV_SRC) $(TB_SRC)
+
+# Tool Selection (iverilog or verilator)
+SIM_TOOL    ?= iverilog
+
+# Tool Flags
+IVERILOG_FLAGS := -Wall -g2012
+VERILATOR_FLAGS := --binary --trace -Wall
+
+# Test Selection
+TEST        ?= $(TB_TOP)
+
+# ============================================================================
+# Color Codes for Output
+# ============================================================================
+GREEN  := \033[0;32m
+RED    := \033[0;31m
+YELLOW := \033[0;33m
+NC     := \033[0m
+
+# ============================================================================
+# Phony Targets
+# ============================================================================
+.PHONY: all clean compile run wave test lint help dirs
+
+# ============================================================================
+# Default Target
+# ============================================================================
+all: compile
+
+# ============================================================================
+# Directory Creation
+# ============================================================================
+dirs:
+	@mkdir -p $(BUILD_DIR) $(LOG_DIR)
+
+# ============================================================================
+# Compilation
+# ============================================================================
+ifeq ($(SIM_TOOL),iverilog)
+compile: dirs
+	@echo "Compiling with Icarus Verilog..."
+	@iverilog $(IVERILOG_FLAGS) -o $(BUILD_DIR)/$(TEST).vvp \
+		-s $(TEST) $(ALL_SRC) 2>&1 | tee $(LOG_DIR)/compile.log
+	@if [ $$? -eq 0 ]; then \
+		echo -e "$(GREEN)Compilation PASSED$(NC)"; \
+	else \
+		echo -e "$(RED)Compilation FAILED$(NC)"; \
+		exit 1; \
+	fi
+else
+compile: dirs
+	@echo "Compiling with Verilator..."
+	@verilator $(VERILATOR_FLAGS) --top-module $(TEST) \
+		-o $(BUILD_DIR)/V$(TEST) $(ALL_SRC) 2>&1 | tee $(LOG_DIR)/compile.log
+endif
+
+# ============================================================================
+# Simulation
+# ============================================================================
+ifeq ($(SIM_TOOL),iverilog)
+run: compile
+	@echo "Running simulation..."
+	@cd $(BUILD_DIR) && vvp $(TEST).vvp 2>&1 | tee ../$(LOG_DIR)/sim.log
+	@if grep -q "FAIL\|ERROR" $(LOG_DIR)/sim.log; then \
+		echo -e "$(RED)Simulation FAILED$(NC)"; \
+		exit 1; \
+	else \
+		echo -e "$(GREEN)Simulation PASSED$(NC)"; \
+	fi
+else
+run: compile
+	@echo "Running simulation..."
+	@$(BUILD_DIR)/V$(TEST) 2>&1 | tee $(LOG_DIR)/sim.log
+endif
+
+# ============================================================================
+# Waveform Viewing
+# ============================================================================
+wave: run
+	@echo "Opening waveform viewer..."
+	@if [ -f $(BUILD_DIR)/*.vcd ]; then \
+		gtkwave $(BUILD_DIR)/*.vcd &; \
+	else \
+		echo -e "$(YELLOW)No VCD file found$(NC)"; \
+	fi
+
+# ============================================================================
+# Run All Tests
+# ============================================================================
+test: dirs
+	@echo "Running all tests..."
+	@failed=0; \
+	for tb in $(TB_DIR)/*_tb.v $(TB_DIR)/*_tb.sv; do \
+		if [ -f "$$tb" ]; then \
+			name=$$(basename $$tb | sed 's/\.[^.]*$$//'); \
+			echo "Running $$name..."; \
+			$(MAKE) run TEST=$$name > $(LOG_DIR)/$$name.log 2>&1; \
+			if [ $$? -eq 0 ]; then \
+				echo -e "  $(GREEN)PASS$(NC): $$name"; \
+			else \
+				echo -e "  $(RED)FAIL$(NC): $$name"; \
+				failed=$$((failed+1)); \
+			fi; \
+		fi; \
+	done; \
+	echo ""; \
+	if [ $$failed -eq 0 ]; then \
+		echo -e "$(GREEN)All tests passed!$(NC)"; \
+	else \
+		echo -e "$(RED)$$failed test(s) failed$(NC)"; \
+		exit 1; \
+	fi
+
+# ============================================================================
+# Linting
+# ============================================================================
+lint: dirs
+	@echo "Running lint checks..."
+	@verilator --lint-only -Wall $(VERILOG_SRC) $(SV_SRC) 2>&1 | tee $(LOG_DIR)/lint.log
+	@if [ $$? -eq 0 ]; then \
+		echo -e "$(GREEN)Lint PASSED$(NC)"; \
+	else \
+		echo -e "$(YELLOW)Lint warnings found$(NC)"; \
+	fi
+
+# ============================================================================
+# Cleanup
+# ============================================================================
+clean:
+	@echo "Cleaning build artifacts..."
+	@rm -rf $(BUILD_DIR) $(LOG_DIR)
+	@rm -f *.vcd *.vvp *.log
+	@echo "Clean complete."
+
+# ============================================================================
+# Help
+# ============================================================================
+help:
+	@echo "============================================"
+	@echo "  $(PROJECT) Makefile Help"
+	@echo "============================================"
+	@echo ""
+	@echo "Targets:"
+	@echo "  make              - Compile the design"
+	@echo "  make run          - Compile and run simulation"
+	@echo "  make wave         - Run and open waveform viewer"
+	@echo "  make test         - Run all testbenches"
+	@echo "  make lint         - Run lint checks"
+	@echo "  make clean        - Remove build artifacts"
+	@echo "  make help         - Show this help message"
+	@echo ""
+	@echo "Options:"
+	@echo "  TEST=name         - Specify testbench (default: $(TB_TOP))"
+	@echo "  SIM_TOOL=tool     - Select simulator (iverilog/verilator)"
+	@echo ""
+	@echo "Examples:"
+	@echo "  make run TEST=alu_tb"
+	@echo "  make run SIM_TOOL=verilator"
+	@echo ""

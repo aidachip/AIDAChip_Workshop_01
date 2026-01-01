@@ -1,0 +1,175 @@
+===============================================================================
+                        SYNTHESIS REPORT
+                        Design: cpu_core
+                        Tool: Yosys 0.35
+                        Date: 2024-03-15 09:45:22
+===============================================================================
+
+1. READING DESIGN
+-------------------------------------------------------------------------------
+Reading Verilog files...
+  - src/cpu_core.v
+  - src/alu.v
+  - src/register_file.v
+  - src/control_unit.v
+  - src/instruction_decoder.v
+  - src/memory_interface.v
+
+Parsing completed: 6 files, 0 errors, 3 warnings
+
+Warning: src/alu.v:45: Unused signal 'debug_out'
+Warning: src/control_unit.v:112: Implicit wire declaration 'state_next'
+Warning: src/memory_interface.v:78: Truncating value to fit width
+
+2. ELABORATION
+-------------------------------------------------------------------------------
+Elaborating design hierarchy...
+
+Top module: cpu_core
+  +-- alu (1 instance)
+  +-- register_file (1 instance)
+  +-- control_unit (1 instance)
+  +-- instruction_decoder (1 instance)
+  +-- memory_interface (1 instance)
+
+Hierarchy depth: 2
+Total modules: 6
+
+3. SYNTHESIS
+-------------------------------------------------------------------------------
+Running synthesis passes...
+
+3.1. Proc pass
+  Converting processes to netlists...
+  Converted 45 processes
+
+3.2. Opt pass
+  Optimizing design...
+  Removed 234 unused cells
+  Merged 56 equivalent cells
+
+3.3. FSM pass
+  Extracting FSMs...
+  Found FSM in control_unit: 8 states, 12 transitions
+  Found FSM in memory_interface: 4 states, 6 transitions
+
+3.4. Memory pass
+  Mapping memories...
+  register_file: 32x32-bit register file -> 1024 flip-flops
+
+3.5. Techmap pass
+  Mapping to technology cells...
+
+4. AREA REPORT
+-------------------------------------------------------------------------------
+
+Module             Cells    Area (um²)   % of Total
+-------------------------------------------------
+cpu_core (top)       156      1,245.3       8.2%
+alu                  892      4,567.8      30.1%
+register_file      1,024      5,120.0      33.7%
+control_unit         234      1,456.2       9.6%
+instruction_decoder  189        945.6       6.2%
+memory_interface     367      1,835.4      12.1%
+-------------------------------------------------
+TOTAL              2,862     15,170.3     100.0%
+
+Cell Type Breakdown:
+  - AND gates:        456 (15.9%)
+  - OR gates:         389 (13.6%)
+  - XOR gates:        234 (8.2%)
+  - NOT gates:        178 (6.2%)
+  - MUX cells:        312 (10.9%)
+  - DFF cells:      1,156 (40.4%)
+  - Other:            137 (4.8%)
+
+5. TIMING REPORT
+-------------------------------------------------------------------------------
+
+Critical Path Analysis:
+
+Startpoint: instruction_decoder/opcode_reg[3]
+Endpoint:   alu/result_reg[31]
+
+Path                                          Delay (ns)
+---------------------------------------------------------
+instruction_decoder/opcode_reg[3]/Q              0.12
+instruction_decoder/U45/Y                        0.08
+control_unit/U123/Y                              0.15
+control_unit/U124/Y                              0.09
+alu/U567/Y                                       0.11
+alu/U568/Y                                       0.14
+alu/U569/Y                                       0.12
+alu/U570/Y                                       0.08
+alu/result_reg[31]/D                             0.05
+---------------------------------------------------------
+Total data path delay:                           0.94 ns
+
+Clock period target:   2.00 ns (500 MHz)
+Setup time:            0.08 ns
+Required time:         1.92 ns
+Arrival time:          0.94 ns
+---------------------------------------------------------
+Slack (MET):           0.98 ns
+
+Other Critical Paths:
+  Path 2: memory_interface -> register_file   Slack: 0.87 ns
+  Path 3: control_unit -> alu                 Slack: 1.12 ns
+  Path 4: instruction_decoder -> control_unit Slack: 1.45 ns
+
+6. POWER ESTIMATION
+-------------------------------------------------------------------------------
+
+Dynamic Power:
+  - Switching power:    12.34 mW
+  - Internal power:      8.56 mW
+  - Total dynamic:      20.90 mW
+
+Leakage Power:           0.45 mW
+
+Total Power:            21.35 mW
+
+Power by Module:
+  - alu:                 7.23 mW (33.9%)
+  - register_file:       6.89 mW (32.3%)
+  - control_unit:        3.12 mW (14.6%)
+  - memory_interface:    2.45 mW (11.5%)
+  - instruction_decoder: 1.21 mW (5.7%)
+  - cpu_core (glue):     0.45 mW (2.1%)
+
+7. WARNINGS AND ERRORS
+-------------------------------------------------------------------------------
+
+Warnings: 3
+  [SYNTH-1] Unused signal 'debug_out' in alu
+  [SYNTH-2] Implicit wire 'state_next' in control_unit
+  [SYNTH-3] Width mismatch in memory_interface (truncated)
+
+Errors: 0
+
+Lint Checks:
+  - Undriven signals: 0
+  - Multi-driven signals: 0
+  - Combinational loops: 0
+  - Latch inference: 0 (PASS)
+
+8. SUMMARY
+-------------------------------------------------------------------------------
+
+Synthesis Status:     PASSED
+Target frequency:     500 MHz
+Achieved frequency:   500 MHz (0.98 ns slack)
+Total area:           15,170.3 um²
+Total power:          21.35 mW
+Cell count:           2,862
+Register count:       1,156
+
+Output files:
+  - cpu_core_synth.v (synthesized netlist)
+  - cpu_core_synth.json (design database)
+  - cpu_core_timing.rpt (detailed timing)
+  - cpu_core_area.rpt (detailed area)
+
+===============================================================================
+                        END OF SYNTHESIS REPORT
+===============================================================================
